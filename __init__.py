@@ -43,7 +43,6 @@ def AdicionaEMPTYCompDef(Nome):
     bpy.context.object.name = Nome
     bpy.context.object.show_name = True
 
-
 # PONTOS REAIS
 
 class AdicionaPnREAL(Operator, AddObjectHelper):
@@ -680,6 +679,96 @@ class AdicionaMeDIGIORT(Operator, AddObjectHelper):
         AdicionaEMPTYCompDef("Me-DIGIORT")
         return {'FINISHED'}
 
+# PONTOS OCULTOS
+
+# PONTOS OCULTOS
+
+class AdicionaICSREAL(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "mesh.add_ics_real"
+    bl_label = "Add ICS REAL"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'ICS-REAL' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        AdicionaEMPTYCompDef("ICS-REAL")
+        return {'FINISHED'}
+
+class AdicionaICIREAL(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "mesh.add_ici_real"
+    bl_label = "Add ICI REAL"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'ICI-REAL' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        AdicionaEMPTYCompDef("ICI-REAL")
+        return {'FINISHED'}
+
+class AdicionaICSDIGIORT(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "mesh.add_ics_digiort"
+    bl_label = "Add ICS DIGIORT"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'ICS-DIGIORT' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        AdicionaEMPTYCompDef("ICS-DIGIORT")
+        return {'FINISHED'}
+
+class AdicionaICIDIGIORT(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "mesh.add_ici_digiort"
+    bl_label = "Add ICI DIGIORT"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+
+        found = 'ICI-DIGIORT' in bpy.data.objects
+
+        if found == False:
+            return True
+        else:
+            if found == True:
+                return False
+
+    def execute(self, context):
+        AdicionaEMPTYCompDef("ICI-DIGIORT")
+        return {'FINISHED'}
+
+# DISTÂNCIA
+
 def DistLinearComp(Objeto1, Objeto2):
 
     l = []
@@ -788,6 +877,8 @@ class GeraCSVComp(Operator, AddObjectHelper):
     def execute(self, context):
         GeraCSVCompDef()
         return {'FINISHED'}
+
+# INTERFACE
 
 class BotoesPontosReal(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
@@ -968,6 +1059,10 @@ def register():
     bpy.utils.register_class(AdicionaPogDIGIORT)
     bpy.utils.register_class(AdicionaGnDIGIORT)
     bpy.utils.register_class(AdicionaMeDIGIORT)
+    bpy.utils.register_class(AdicionaICSREAL)
+    bpy.utils.register_class(AdicionaICIREAL)
+    bpy.utils.register_class(AdicionaICSDIGIORT)
+    bpy.utils.register_class(AdicionaICIDIGIORT)
     bpy.utils.register_class(GeraCSVComp)
     bpy.utils.register_class(BotoesCalculaComp)
 
@@ -1006,6 +1101,10 @@ def unregister():
     bpy.utils.unregister_class(AdicionaPogDIGIORT)
     bpy.utils.unregister_class(AdicionaGnDIGIORT)
     bpy.utils.unregister_class(AdicionaMeDIGIORT)
+    bpy.utils.unregister_class(AdicionaICSREAL)
+    bpy.utils.unregister_class(AdicionaICIREAL)
+    bpy.utils.unregister_class(AdicionaICSDIGIORT)
+    bpy.utils.unregister_class(AdicionaICIDIGIORT)
     bpy.utils.unregister_class(GeraCSVComp)
     bpy.utils.unregister_class(BotoesCalculaComp)
 
