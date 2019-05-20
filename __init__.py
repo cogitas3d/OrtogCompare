@@ -29,11 +29,20 @@ from bpy.types import (Panel,
                        PropertyGroup,
                        )
 
+def abrir_diretorio_relat_comp(path):
+    if platform.system() == "Windows":
+        os.startfile(path)
+    elif platform.system() == "Darwin":
+        subprocess.Popen(["open", path])
+    else:
+        subprocess.Popen(["xdg-open", path])
+
 def AdicionaEMPTYCompDef(Nome):
 
     bpy.ops.object.empty_add(type='PLAIN_AXES', radius=6, view_align=False)
     bpy.context.object.name = Nome
     bpy.context.object.show_name = True
+
 
 # PONTOS REAIS
 
@@ -671,6 +680,114 @@ class AdicionaMeDIGIORT(Operator, AddObjectHelper):
         AdicionaEMPTYCompDef("Me-DIGIORT")
         return {'FINISHED'}
 
+def DistLinearComp(Objeto1, Objeto2):
+
+    l = []
+    Objetos = [bpy.data.objects[Objeto1], bpy.data.objects[Objeto2]]
+    
+    for item in Objetos:
+       l.append(item.location)
+
+    distanciaLinear = sqrt( (l[0][0] - l[1][0])**2 + (l[0][1] - l[1][1])**2 + (l[0][2] - l[1][2])**2)
+    
+    return distanciaLinear
+
+def GeraCSVCompDef():
+
+    tmpdir = tempfile.mkdtemp()
+
+    DistPnREADIGIDOL = DistLinearComp("Pn-REAL", "Pn-DIGIDOL")
+    DistSnREALDIGIDOL = DistLinearComp("Sn-REAL", "Pn-DIGIDOL")
+    DistAREALDIGIDOL = DistLinearComp("A-REAL", "A-DIGIDOL")
+    DistLsREALDIGIDOL = DistLinearComp("Ls-REAL", "Ls-DIGIDOL")
+    DistStREALDIGIDOL = DistLinearComp("St-REAL", "St-DIGIDOL")
+    DistLiREALDIGIDOL = DistLinearComp("Li-REAL", "Li-DIGIDOL")
+    DistBREALDIGIDOL = DistLinearComp("B-REAL", "B-DIGIDOL")
+    DistPogREALDIGIDOL = DistLinearComp("Pog-REAL", "Pog-DIGIDOL")
+    DistGnREALDIGIDOL = DistLinearComp("Gn-REAL", "Gn-DIGIDOL")
+    DistMeREALDIGIDOL = DistLinearComp("Me-REAL", "Me-DIGIDOL")
+
+    DistPnREADIGIORT = DistLinearComp("Pn-REAL", "Pn-DIGIORT")
+    DistSnREALDIGIORT = DistLinearComp("Sn-REAL", "Pn-DIGIORT")
+    DistAREALDIGIORT = DistLinearComp("A-REAL", "A-DIGIORT")
+    DistLsREALDIGIORT = DistLinearComp("Ls-REAL", "Ls-DIGIORT")
+    DistStREALDIGIORT = DistLinearComp("St-REAL", "St-DIGIORT")
+    DistLiREALDIGIORT = DistLinearComp("Li-REAL", "Li-DIGIORT")
+    DistBREALDIGIORT = DistLinearComp("B-REAL", "B-DIGIORT")
+    DistPogREALDIGIORT = DistLinearComp("Pog-REAL", "Pog-DIGIORT")
+    DistGnREALDIGIORT = DistLinearComp("Gn-REAL", "Gn-DIGIORT")
+    DistMeREALDIGIORT = DistLinearComp("Me-REAL", "Me-DIGIORT")
+
+    DistPnREADIGIORT = DistLinearComp("Pn-DIGIDOL", "Pn-DIGIORT")
+    DistSnDIGIDOLDIGIORT = DistLinearComp("Sn-DIGIDOL", "Pn-DIGIORT")
+    DistADIGIDOLDIGIORT = DistLinearComp("A-DIGIDOL", "A-DIGIORT")
+    DistLsDIGIDOLDIGIORT = DistLinearComp("Ls-DIGIDOL", "Ls-DIGIORT")
+    DistStDIGIDOLDIGIORT = DistLinearComp("St-DIGIDOL", "St-DIGIORT")
+    DistLiDIGIDOLDIGIORT = DistLinearComp("Li-DIGIDOL", "Li-DIGIORT")
+    DistBDIGIDOLDIGIORT = DistLinearComp("B-DIGIDOL", "B-DIGIORT")
+    DistPogDIGIDOLDIGIORT = DistLinearComp("Pog-DIGIDOL", "Pog-DIGIORT")
+    DistGnDIGIDOLDIGIORT = DistLinearComp("Gn-DIGIDOL", "Gn-DIGIORT")
+    DistMeDIGIDOLDIGIORT = DistLinearComp("Me-DIGIDOL", "Me-DIGIORT")
+
+
+    with open(tmpdir+'/OrtogCompare_file.csv', mode='w') as centroid_file:
+        centroid_writer = csv.writer(centroid_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+        centroid_writer.writerow(['ARQUIVO:', str(bpy.path.basename(bpy.context.blend_data.filepath))])
+        centroid_writer.writerow([''])
+        centroid_writer.writerow(['TABELA 01 - REAL X DOLPHIN'])
+        centroid_writer.writerow([''])
+        centroid_writer.writerow(['Pn-REAL - Pn-DIGIDOL', str(DistPnREADIGIDOL)])
+        centroid_writer.writerow(['Sn-REAL - Sn-DIGIDOL', str(DistSnREALDIGIDOL)])
+        centroid_writer.writerow(["A'-REAL - A'-DIGIDOL", str(DistAREALDIGIDOL)])
+        centroid_writer.writerow(["Ls-REAL - Ls-DIGIDOL", str(DistLsREALDIGIDOL)])
+        centroid_writer.writerow(["St-REAL - St-DIGIDOL", str(DistStREALDIGIDOL)])
+        centroid_writer.writerow(["Li-REAL - Li-DIGIDOL", str(DistLiREALDIGIDOL)])
+        centroid_writer.writerow(["B'-REAL - B'-DIGIDOL", str(DistBREALDIGIDOL)])
+        centroid_writer.writerow(["Pog'-REAL - Pog'-DIGIDOL", str(DistPogREALDIGIDOL)])
+        centroid_writer.writerow(["Gn'-REAL - Gn'-DIGIDOL", str(DistGnREALDIGIDOL)])
+        centroid_writer.writerow(["Me'-REAL - Me'-DIGIDOL", str(DistMeREALDIGIDOL)])
+        centroid_writer.writerow([''])
+        centroid_writer.writerow([''])
+        centroid_writer.writerow(['TABELA 02 - REAL X ORTOGONBLENDER'])
+        centroid_writer.writerow([''])
+        centroid_writer.writerow(['Pn-REAL - Pn-DIGIORT', str(DistPnREADIGIORT)])
+        centroid_writer.writerow(['Sn-REAL - Sn-DIGIORT', str(DistSnREALDIGIORT)])
+        centroid_writer.writerow(["A'-REAL - A'-DIGIORT", str(DistAREALDIGIORT)])
+        centroid_writer.writerow(["Ls-REAL - Ls-DIGIORT", str(DistLsREALDIGIORT)])
+        centroid_writer.writerow(["St-REAL - St-DIGIORT", str(DistStREALDIGIORT)])
+        centroid_writer.writerow(["Li-REAL - Li-DIGIORT", str(DistLiREALDIGIORT)])
+        centroid_writer.writerow(["B'-REAL - B'-DIGIORT", str(DistBREALDIGIORT)])
+        centroid_writer.writerow(["Pog'-REAL - Pog'-DIGIORT", str(DistPogREALDIGIORT)])
+        centroid_writer.writerow(["Gn'-REAL - Gn'-DIGIORT", str(DistGnREALDIGIORT)])
+        centroid_writer.writerow(["Me'-REAL - Me'-DIGIORT", str(DistMeREALDIGIORT)])
+        centroid_writer.writerow([''])
+        centroid_writer.writerow([''])
+        centroid_writer.writerow(['TABELA 03 - DOLPHIN X ORTOGONBLENDER'])
+        centroid_writer.writerow([''])
+        centroid_writer.writerow(['Pn-DIGIDOL - Pn-DIGIORT', str(DistPnREADIGIORT)])
+        centroid_writer.writerow(['Sn-DIGIDOL - Sn-DIGIORT', str(DistSnDIGIDOLDIGIORT)])
+        centroid_writer.writerow(["A'-DIGIDOL - A'-DIGIORT", str(DistADIGIDOLDIGIORT)])
+        centroid_writer.writerow(["Ls-DIGIDOL - Ls-DIGIORT", str(DistLsDIGIDOLDIGIORT)])
+        centroid_writer.writerow(["St-DIGIDOL - St-DIGIORT", str(DistStDIGIDOLDIGIORT)])
+        centroid_writer.writerow(["Li-DIGIDOL - Li-DIGIORT", str(DistLiDIGIDOLDIGIORT)])
+        centroid_writer.writerow(["B'-DIGIDOL - B'-DIGIORT", str(DistBDIGIDOLDIGIORT)])
+        centroid_writer.writerow(["Pog'-DIGIDOL - Pog'-DIGIORT", str(DistPogDIGIDOLDIGIORT)])
+        centroid_writer.writerow(["Gn'-DIGIDOL - Gn'-DIGIORT", str(DistGnDIGIDOLDIGIORT)])
+        centroid_writer.writerow(["Me'-DIGIDOL - Me'-DIGIORT", str(DistMeDIGIDOLDIGIORT)])
+
+        subprocess.Popen("libreoffice "+tmpdir+"/OrtogCompare_file.csv", shell=True)
+        abrir_diretorio_relat_comp(tmpdir)
+
+class GeraCSVComp(Operator, AddObjectHelper):
+    """Create a new Mesh Object"""
+    bl_idname = "object.gera_csv_comp"
+    bl_label = "Add Centroide"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        GeraCSVCompDef()
+        return {'FINISHED'}
 
 class BotoesPontosReal(bpy.types.Panel):
     """Planejamento de cirurgia ortognática no Blender"""
@@ -801,6 +918,22 @@ class BotoesPontosDigiort(bpy.types.Panel):
         row = layout.row()
         row.operator("mesh.add_me_digiort", text="Me'-DIGIORT", icon="OUTLINER_DATA_EMPTY")
 
+class BotoesCalculaComp(bpy.types.Panel):
+    """Planejamento de cirurgia ortognática no Blender"""
+    bl_label = "FACE ORTOGONBLENDER"
+    bl_idname = "face.calcula"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
+    bl_category = "Compare"
+
+    def draw(self, context):
+        layout = self.layout
+
+        obj = context.object
+
+        row = layout.row()
+        row.operator("object.gera_csv_comp", text="GERA RELATÓRIO!", icon="SAVE_COPY")        
+
 def register():
     bpy.utils.register_class(BotoesPontosReal)
     bpy.utils.register_class(AdicionaPnREAL)
@@ -835,6 +968,8 @@ def register():
     bpy.utils.register_class(AdicionaPogDIGIORT)
     bpy.utils.register_class(AdicionaGnDIGIORT)
     bpy.utils.register_class(AdicionaMeDIGIORT)
+    bpy.utils.register_class(GeraCSVComp)
+    bpy.utils.register_class(BotoesCalculaComp)
 
     
 def unregister():
@@ -871,6 +1006,8 @@ def unregister():
     bpy.utils.unregister_class(AdicionaPogDIGIORT)
     bpy.utils.unregister_class(AdicionaGnDIGIORT)
     bpy.utils.unregister_class(AdicionaMeDIGIORT)
+    bpy.utils.unregister_class(GeraCSVComp)
+    bpy.utils.unregister_class(BotoesCalculaComp)
 
 if __name__ == "__main__":
     register()
