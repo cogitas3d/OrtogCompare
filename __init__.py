@@ -1,7 +1,7 @@
 bl_info = {
     "name": "OrtogCompare",
     "author": "Cicero Moraes",
-    "version": (1, 1, 1),
+    "version": (1, 1, 2),
     "blender": (2, 75, 0),
     "location": "View3D",
     "description": "Planejamento de Cirurgia Ortognática no Blender",
@@ -778,15 +778,17 @@ def DistLinearComp(Objeto1, Objeto2):
        l.append(item.location)
 
     distanciaLinear = sqrt( (l[0][0] - l[1][0])**2 + (l[0][1] - l[1][1])**2 + (l[0][2] - l[1][2])**2)
+
+    distanciaSimp = "{:.2f}".format(distanciaLinear)
     
-    return distanciaLinear
+    return distanciaSimp.replace('.',',')
 
 def GeraCSVCompDef():
 
     tmpdir = tempfile.mkdtemp()
 
     DistPnREADIGIDOL = DistLinearComp("Pn-REAL", "Pn-DIGIDOL")
-    DistSnREALDIGIDOL = DistLinearComp("Sn-REAL", "Pn-DIGIDOL")
+    DistSnREALDIGIDOL = DistLinearComp("Sn-REAL", "Sn-DIGIDOL")
     DistAREALDIGIDOL = DistLinearComp("A-REAL", "A-DIGIDOL")
     DistLsREALDIGIDOL = DistLinearComp("Ls-REAL", "Ls-DIGIDOL")
     DistStREALDIGIDOL = DistLinearComp("St-REAL", "St-DIGIDOL")
@@ -797,7 +799,7 @@ def GeraCSVCompDef():
     DistMeREALDIGIDOL = DistLinearComp("Me-REAL", "Me-DIGIDOL")
 
     DistPnREADIGIORT = DistLinearComp("Pn-REAL", "Pn-DIGIORT")
-    DistSnREALDIGIORT = DistLinearComp("Sn-REAL", "Pn-DIGIORT")
+    DistSnREALDIGIORT = DistLinearComp("Sn-REAL", "Sn-DIGIORT")
     DistAREALDIGIORT = DistLinearComp("A-REAL", "A-DIGIORT")
     DistLsREALDIGIORT = DistLinearComp("Ls-REAL", "Ls-DIGIORT")
     DistStREALDIGIORT = DistLinearComp("St-REAL", "St-DIGIORT")
@@ -808,7 +810,7 @@ def GeraCSVCompDef():
     DistMeREALDIGIORT = DistLinearComp("Me-REAL", "Me-DIGIORT")
 
     DistPnREADIGIORT = DistLinearComp("Pn-DIGIDOL", "Pn-DIGIORT")
-    DistSnDIGIDOLDIGIORT = DistLinearComp("Sn-DIGIDOL", "Pn-DIGIORT")
+    DistSnDIGIDOLDIGIORT = DistLinearComp("Sn-DIGIDOL", "Sn-DIGIORT")
     DistADIGIDOLDIGIORT = DistLinearComp("A-DIGIDOL", "A-DIGIORT")
     DistLsDIGIDOLDIGIORT = DistLinearComp("Ls-DIGIDOL", "Ls-DIGIORT")
     DistStDIGIDOLDIGIORT = DistLinearComp("St-DIGIDOL", "St-DIGIORT")
